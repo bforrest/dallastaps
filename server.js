@@ -40,10 +40,7 @@ function handleError(res, reason, message, code) {
 /*  "/api/taps"
  *    GET: finds all taps
  *    POST: creates a new tap
- */
 
-app.get("/api/taps", function(req, res) {
-  /*
   {
     "_id": <ObjectId>,
     "name": <string>,
@@ -57,10 +54,30 @@ app.get("/api/taps", function(req, res) {
     }
   }
 */
+app.get("/api/taps", function(req, res) {
 
+ db.collection(CONTACTS_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get contacts.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
 });
 
 app.post("/api/taps", function(req, res) {
+    var newTap = req.body;
+     if (!req.body.name) {
+      handleError(res, "Invalid user input", "Must provide a name.", 400);
+    }
+
+    db.collection(CONTACTS_COLLECTION).insertOne(newTap, function(err, doc) {
+      if (err) {
+        handleError(res, err.message, "Failed to create new tap.");
+      } else {
+        res.status(201).json(doc.ops[0]);
+      }
+    });
 });
 
 /*  "/api/tap/:id"
