@@ -56,7 +56,7 @@ function handleError(res, reason, message, code) {
 */
 app.get("/api/taps", function(req, res) {
 
- db.collection(CONTACTS_COLLECTION).find({}).toArray(function(err, docs) {
+ db.collection(TAPS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get contacts.");
     } else {
@@ -71,7 +71,7 @@ app.post("/api/taps", function(req, res) {
       handleError(res, "Invalid user input", "Must provide a name.", 400);
     }
 
-    db.collection(CONTACTS_COLLECTION).insertOne(newTap, function(err, doc) {
+    db.collection(TAPS_COLLECTION).insertOne(newTap, function(err, doc) {
       if (err) {
         handleError(res, err.message, "Failed to create new tap.");
       } else {
