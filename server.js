@@ -43,6 +43,21 @@ function handleError(res, reason, message, code) {
  */
 
 app.get("/api/taps", function(req, res) {
+  /*
+  {
+    "_id": <ObjectId>,
+    "name": <string>,
+    "beer": { // or <beer>
+      "name": <string>,
+      "brewery": <string>
+      "url": <uri>,
+      "abv": <number>,
+      "ibu": <number>,
+      "description": <string>
+    }
+  }
+*/
+
 });
 
 app.post("/api/taps", function(req, res) {
@@ -71,6 +86,18 @@ app.delete("/api/taps/:id", function(req, res) {
  *    POST: creates a new tap
  */
 
+/*
+  {
+      "_id": <ObjectId>,
+      "name": <string>,
+      "brewery": <string>
+      "brewer_url": <uri>,
+      "beer_url": <uri>,
+      "abv": <number>,
+      "ibu": <number>,
+      "description": <string>
+    }
+*/
 app.get("/api/beers", function(req, res) {
 });
 
@@ -90,4 +117,41 @@ app.put("/api/beers/:id", function(req, res) {
 });
 
 app.delete("/api/beers/:id", function(req, res) {
+});
+
+
+
+// BREWERIES API ROUTES
+
+/*  "/api/breweries"
+ *    GET: finds all brewries
+ *    POST: creates a new brewery
+ */
+
+/*
+  {
+      "_id": <ObjectId>,
+      "name": <string>,
+      "website": <string>
+    }
+*/
+app.get("/api/breweries", function(req, res) {
+});
+
+app.post("/api/breweries", function(req, res) {
+});
+
+/*  "/api/breweries/:id"
+ *    GET: find brewery by id
+ *    PUT: update brewery by id
+ *    DELETE: deletes brewery by id
+ */
+
+app.get("/api/breweries/:id", function(req, res) {
+});
+
+app.put("/api/breweries/:id", function(req, res) {
+});
+
+app.delete("/api/breweries/:id", function(req, res) {
 });
