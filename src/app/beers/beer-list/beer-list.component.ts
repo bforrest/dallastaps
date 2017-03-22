@@ -3,9 +3,10 @@ import {Beer} from '../beer';
 import {BeerService} from '../beer.service';
 import {BeerDetailsComponent} from '../beer-details/beer-details.component';
 @Component({
-  selector: 'app-beer-list',
+  selector: 'beer-list',
   templateUrl: './beer-list.component.html',
-  styleUrls: ['./beer-list.component.css']
+  styleUrls: ['./beer-list.component.css'],
+  providers: [BeerService]
 })
 export class BeerListComponent implements OnInit {
 
