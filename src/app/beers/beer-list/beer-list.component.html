@@ -4,7 +4,7 @@
     <ul class="list-group">
       <li class="list-group-item"
         *ngFor="let beer of beers"
-        (click)="selectContact(beer)"
+        (click)="selectBeer(beer)"
         [class.active]="beer === selectedBeer">
         {{beer.name}}
       </li>
