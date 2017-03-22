@@ -160,7 +160,7 @@ app.post("/api/beers", function(req, res) {
 
   db.collection(BEERS_COLLECTION).insertOne(newBeer, function(err, doc){
     if (err) {
-      handleError(res, err.message, "Failed ot create new beer.");
+      handleError(res, err.message, "Failed to create new beer.");
     } else {
       res.status(201).json(doc.ops[0]);
     }
@@ -187,8 +187,8 @@ app.put("/api/beers/:id", function(req, res) {
   var updateDoc = req.body;
   delete updateDoc._id;
 
-  db.collection(BEERS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)},
-    updateDoc, function(err, doc) {
+  db.collection(BEERS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc,
+    function(err, doc) {
       if (err) {
         handleError(res, err.message, "Falled to update beer.");
       } else {
@@ -225,9 +225,28 @@ app.delete("/api/beers/:id", function(req, res) {
     }
 */
 app.get("/api/breweries", function(req, res) {
+  db.collectoin(BREWERS_COLLECTION).find({}).toArray(function(err, docs){
+    if (err){
+      handleError(res, err.message, "Failed to get brewers");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
 });
 
 app.post("/api/breweries", function(req, res) {
+  var newBrewer = req.body;
+  if(!req.body.name) {
+    handleError(res, "Invalid input for brewer", "Must provide a name.", 400);
+  }
+
+  db.collectoin(BREWERS_COLLECTION).insetOne(newBrewer, function(err, doc){
+    if (err) {
+      handleError(res, err.message, "Failed to create a new brewer.");
+    } else {
+      res.status(201).json(doc.ops[0]);
+    }
+  })
 });
 
 /*  "/api/breweries/:id"
@@ -237,10 +256,35 @@ app.post("/api/breweries", function(req, res) {
  */
 
 app.get("/api/breweries/:id", function(req, res) {
+  db.collectoin(BREWERS_COLLECTION).findOne({_id: new ObjectID(req.params.id) }, function(err, doc){
+    if (err) {
+      handleError(res, err.message, "Failed to get brewery.");
+    } else {
+      res.status(200).json(doc);
+    }
+  })
 });
 
 app.put("/api/breweries/:id", function(req, res) {
+  var updateDoc = req.body;
+  delete updateDoc._id;
+  db.collectoin(BREWERS_COLLECTION).updateOne({_id: new ObjectID(req.params.id) }, updateDoc,
+  function(err, doc){
+    if (err) {
+      handleError(res, err.message, "Failed to update brewer.");
+    } else {
+      updateDoc._id = req.params.id;
+      res.status(200).json(updateDoc);
+    }
+  })
 });
 
 app.delete("/api/breweries/:id", function(req, res) {
+  db.collectoin(BREWERS_COLLECTION).deleteOne({ _id: new ObjectID(req.params.id) }, function(err, result){
+    if (err) {
+      handleError(res, err.message, "Failed to delete brewer.");
+    } else {
+      res.status(200).json(req.params.id);
+    }
+  })
 });
