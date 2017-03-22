@@ -1,8 +1,11 @@
 {
-  "name": "mean-tapwall",
+  "name": "dallastaps",
   "version": "0.0.0",
   "license": "MIT",
   "angular-cli": {},
+  "engines":{
+    "node": "7.7.2"
+  },
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
