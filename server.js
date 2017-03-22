@@ -136,7 +136,7 @@ app.delete("/api/taps/:id", function(req, res) {
       "name": <string>,
       "brewery": <string>
       "brewer_url": <uri>,
-      "beer_url": <uri>,
+      "url": <uri>,
       "abv": <number>,
       "ibu": <number>,
       "description": <string>
