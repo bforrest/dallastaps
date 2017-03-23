@@ -1,11 +1,10 @@
+
+<h2>What's on Tap</h2>
+
 <div class="row">
-  <div class="col-md-5">
-    <h2>What's on Tap</h2>
-    <ul class="list-group">
-      <li class="list-group-item"
-        *ngFor="let tap of taps">
+  <div class="medium-6 large-4 columns" *ngFor="let tap of taps" >
         <h3>{{tap.name}}</h3>
-        <div *ngIf="tap.beer" class="medium-6 large-4 columns">
+        <div *ngIf="tap.beer">
           <article class="article-card">
             <div class="card-content">
 
@@ -22,7 +21,4 @@
             </div>
           </article>
       </div>
-
-    </ul>
-
-  </div>
+</div>
