@@ -1,0 +1,25 @@
+<div *ngIf="tap" class="row">
+  <div class="col-md-12">
+    <h2 *ngIf="tap._id">Tap Details</h2>
+    <h2 *ngIf="!tap._id">New tap</h2>
+  </div>
+</div>
+
+<div *ngIf="tap" class="row">
+  <form class="col-md-12">
+    <div class="form-group">
+      <label for="tap-name">Name</label>
+      <input class="form-control" name="tap-name" [(ngModel)]="tap.name"
+        placeholder="Right Faucet, Right Picnic...."/>
+    </div>
+    <div class="form-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="tap.tapped" name="tapped">
+        Has Suds?
+      </label>
+    </div>
+    <button class="btn btn-primary" *ngIf="!tap._id" (click)="createTap(tap)">Create</button>
+    <button class="btn btn-info" *ngIf="tap._id" (click)="updateTap(tap)">Update</button>
+    <button class="btn btn-danger" *ngIf="tap._id" (click)="deleteTap(tap._id)">Delete</button>
+  </form>
+</div>

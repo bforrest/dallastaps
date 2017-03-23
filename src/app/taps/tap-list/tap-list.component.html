@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-md-5">
+    <h2>Taps</h2>
+    <ul class="list-group">
+      <li class="list-group-item"
+        *ngFor="let tap of taps"
+        (click)="selectTap(tap)"
+        [class.active]="tap === selectedTap">
+        {{tap.name}}
+    </ul>
+    <button class="btn btn-warning" (click)="createNewTap()">New</button>
+  </div>
+  <div class="col-md-5 col-md-offset-2">
+    <tap-details
+      [tap]="selectedTap"
+      [createHandler]="addTap"
+      [updateHandler]="updateTap"
+      [deleteHandler]="deleteTap">
+      </tap-details>
+  </div>
+</div>

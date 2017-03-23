@@ -71,6 +71,17 @@ app.get("/api/taps", function(req, res) {
   });
 });
 
+// tapped === true means there is beer flowing, tapped === false means no beer :-()
+app.get("/api/whatson", function(req, res){
+  db.collection(TAPS_COLLECTION).find({ tapped: true }).toArray(function(err, docs){
+    if (err) {
+      handleError(res, err.message, "Failed to find what is on tap.");
+    } else {
+      res.status(200).json(docs);
+    }
+  })
+})
+
 app.post("/api/taps", function(req, res) {
     var newTap = req.body;
      if (!req.body.name) {

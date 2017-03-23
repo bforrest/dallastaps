@@ -28,7 +28,8 @@ export class BeerDetailsComponent {
   }
 
   updateBeer(beer: Beer): void {
-    this.beerService.updateBeer(beer).then((updatedBeer: Beer) => {
+    this.beerService.updateBeer(beer)
+    .then((updatedBeer: Beer) => {
       this.updateHandler(updatedBeer);
     });
   }

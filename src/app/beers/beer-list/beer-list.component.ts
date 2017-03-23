@@ -63,7 +63,7 @@ export class BeerListComponent implements OnInit {
     return this.beers;
   }
 
-  updateBeert = (beer: Beer) => {
+  updateBeer = (beer: Beer) => {
     var idx = this.getIndexOfBeer(beer._id);
     if (idx !== -1) {
       this.beers[idx] = beer;
