@@ -4,5 +4,6 @@ export class Tap {
    _id?: string;
    name: string;
    tapped: boolean;
-   beer: Beer;
+
+   constructor(public beer?: Beer, public beers?: Beer[]){}
 }
