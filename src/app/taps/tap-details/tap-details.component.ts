@@ -1,15 +1,21 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit  } from '@angular/core';
 import {Tap} from '../tap';
 import {TapService} from '../tap.service';
-
+import {Beer} from '../../beers/beer';
+import {BeerService} from '../../beers/beer.service';
 @Component({
   selector: 'tap-details',
   templateUrl: './tap-details.component.html',
-  styleUrls: ['./tap-details.component.css']
+  styleUrls: ['./tap-details.component.css'],
+  providers: [BeerService]
 })
-export class TapDetailsComponent {
+export class TapDetailsComponent implements OnInit {
   @Input()
   tap: Tap;
+
+  selectedBeer: Beer;
+
+  beers: Beer[];
 
   @Input()
   createHandler: Function;
@@ -20,9 +26,20 @@ export class TapDetailsComponent {
   @Input()
   deleteHandler: Function;
 
+  selectBeer(beer: Beer){
+    this.selectedBeer = beer;
+  }
 
-  constructor(private tapService: TapService) { }
-
+  constructor(private tapService: TapService, private beerService: BeerService) { }
+  ngOnInit() {
+    this.beerService
+      .getBeers()
+      .then((beers: Beer[])=> {
+        this.beers = beers.map((beer)=> {
+          return beer;
+        })
+      })
+  }
   createTap(tap: Tap){
     this.tapService.createTap(tap)
       .then((newTap: Tap) => {

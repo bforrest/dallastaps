@@ -18,9 +18,14 @@
         Has Suds?
       </label>
     </div>
-    <beer-list></beer-list>
     <div *ngIf="tap.beer" class="row">
+      <h3>{{tap.beer.name}}</h3>
+      <p>{{tap.beer.description}}</p>
     </div>
+    <beer-list></beer-list>
+    <select name="beer" [(ngModel)]="tap.beer">
+      <option *ngFor="let bottle of beers" [ngValue]="bottle"> {{bottle.name}}</option>
+    </select>
     <button class="btn btn-primary" *ngIf="!tap._id" (click)="createTap(tap)">Create</button>
     <button class="btn btn-info" *ngIf="tap._id" (click)="updateTap(tap)">Update</button>
     <button class="btn btn-danger" *ngIf="tap._id" (click)="deleteTap(tap._id)">Delete</button>

@@ -33,7 +33,7 @@
     </div>
     <div class="form-group">
       <label for="beer-description">Description</label>
-      <input class="form-control" name="beer-description" [(ngModel)]="beer.description" placeholder="Tasty Suds"/>
+      <textarea rows="4" cols="50" class="form-control" name="beer-description" [(ngModel)]="beer.description" placeholder="Tasty Suds"></textarea>
     </div>
     <button class="btn btn-primary" *ngIf="!beer._id" (click)="createBeer(beer)">Create</button>
     <button class="btn btn-info" *ngIf="beer._id" (click)="updateBeer(beer)">Update</button>

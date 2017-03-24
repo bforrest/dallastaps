@@ -1,7 +1,10 @@
 <div class="container">
-  <whatson-list></whatson-list>
-  <tap-list></tap-list>
-  <beer-list></beer-list>
+  <router-outlet></router-outlet>
 </div>
-<div id="footer">
-</div>
+<footer class="footer">
+  <div class="container">
+    <a routerLink="/whats-on-tap" routerLinkActive="active">What's On Tap</a>
+    <a routerLink="/taps" routerLinkActive="active">Taps</a>
+    <a routerLink="/beers" routerLinkActive="active">Beers</a>
+  </div>
+</footer>
