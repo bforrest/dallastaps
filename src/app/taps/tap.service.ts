@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class TapService {
-  private serviceUrl = "/api/taps";
+  private serviceUrl = '/api/taps';
 
   constructor(private http: Http) { }
 
@@ -16,6 +16,7 @@ export class TapService {
       .then(response => response.json() as Tap[])
       .catch(this.handleError);
   }
+  // tslint:disable-next-line:one-line
   createTap(newTap: Tap): Promise<Tap>{
     return this.http.post(this.serviceUrl, newTap)
       .toPromise()
@@ -31,7 +32,7 @@ export class TapService {
   }
 
   updateTap(tap: Tap): Promise<Tap>{
-    var putUrl = this.serviceUrl + '/' + tap._id;
+    const putUrl = this.serviceUrl + '/' + tap._id;
     return this.http.put(putUrl, tap)
       .toPromise()
       .then(response => response.json() as Tap)
@@ -40,7 +41,7 @@ export class TapService {
 
 
     private handleError (error: any) {
-      let errMsg = (error.message) ? error.message :
+      const errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
       console.error(errMsg); // log to console instead
     }
