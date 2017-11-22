@@ -15,7 +15,7 @@ const appRoutes: Routes = [
   { path: 'whats-on-tap', component: WhatsonListComponent },
   { path: 'taps', component: TapListComponent },
   { path: 'beers', component: BeerListComponent},
-   { path: '',   redirectTo: '/whats-on-tap', pathMatch: 'full' },
+  { path: '',   redirectTo: '/whats-on-tap', pathMatch: 'full' },
 ];
 
 @NgModule({

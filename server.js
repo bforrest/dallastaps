@@ -19,29 +19,29 @@ app.use(express.static(distDir));
 var db;
 
 // Connect to the database before starting the application server.
-mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
-  if (err) {
-    console.log(err);
-    process.exit(1);
-  }
+mongodb.MongoClient.connect(process.env.MONGODB_URI, function(err, database) {
+    if (err) {
+        console.log(err);
+        process.exit(1);
+    }
 
-  // Save database object from the callback for reuse.
-  db = database;
-  console.log("Database connection ready");
+    // Save database object from the callback for reuse.
+    db = database;
+    console.log("Database connection ready");
 
-  // Initialize the app.
-  var server = app.listen(process.env.PORT || 8080, function () {
-    var port = server.address().port;
-    console.log("App now running on port", port);
-  });
+    // Initialize the app.
+    var server = app.listen(process.env.PORT || 8080, function() {
+        var port = server.address().port;
+        console.log("App now running on port", port);
+    });
 });
 
 // TAPS API ROUTES BELOW
 
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
-  console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
+    console.log("ERROR: " + reason);
+    res.status(code || 500).json({ "error": message });
 }
 
 /*  "/api/taps"
@@ -62,38 +62,38 @@ function handleError(res, reason, message, code) {
   }
 */
 app.get("/api/taps", function(req, res) {
-   db.collection(TAPS_COLLECTION).find({}).toArray(function(err, docs) {
-    if (err) {
-      handleError(res, err.message, "Failed to get taps.");
-    } else {
-      res.status(200).json(docs);
-    }
-  });
+    db.collection(TAPS_COLLECTION).find({}).toArray(function(err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get taps.");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
 });
 
 // tapped === true means there is beer flowing, tapped === false means no beer :-()
-app.get("/api/whatson", function(req, res){
-  db.collection(TAPS_COLLECTION).find({ tapped: true }).toArray(function(err, docs){
-    if (err) {
-      handleError(res, err.message, "Failed to find what is on tap.");
-    } else {
-      res.status(200).json(docs);
-    }
-  })
+app.get("/api/whatson", function(req, res) {
+    db.collection(TAPS_COLLECTION).find({ tapped: true }).toArray(function(err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to find what is on tap.");
+        } else {
+            res.status(200).json(docs);
+        }
+    })
 })
 
 app.post("/api/taps", function(req, res) {
     var newTap = req.body;
-     if (!req.body.name) {
-      handleError(res, "Invalid user input", "Must provide a name.", 400);
+    if (!req.body.name) {
+        handleError(res, "Invalid user input", "Must provide a name.", 400);
     }
 
     db.collection(TAPS_COLLECTION).insertOne(newTap, function(err, doc) {
-      if (err) {
-        handleError(res, err.message, "Failed to create new tap.");
-      } else {
-        res.status(201).json(doc.ops[0]);
-      }
+        if (err) {
+            handleError(res, err.message, "Failed to create new tap.");
+        } else {
+            res.status(201).json(doc.ops[0]);
+        }
     });
 });
 
@@ -104,38 +104,39 @@ app.post("/api/taps", function(req, res) {
  */
 
 app.get("/api/taps/:id", function(req, res) {
-   db.collection(TAPS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to get tap");
-    } else {
-      res.status(200).json(doc);
-    }
-  });
+    db.collection(TAPS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to get tap");
+        } else {
+            res.status(200).json(doc);
+        }
+    });
 });
 
 app.put("/api/taps/:id", function(req, res) {
-  var updateDoc = req.body;
-  delete updateDoc._id;
+    var updateDoc = req.body;
+    delete updateDoc._id;
 
-  db.collection(TAPS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)},
-    updateDoc, function(err, doc) {
-      if (err) {
-        handleError(res, err.message, "Failed to update tap");
-      } else {
-        updateDoc._id = req.params.id;
-        res.status(200).json(updateDoc);
-      }
-  });
+    db.collection(TAPS_COLLECTION).updateOne({ _id: new ObjectID(req.params.id) },
+        updateDoc,
+        function(err, doc) {
+            if (err) {
+                handleError(res, err.message, "Failed to update tap");
+            } else {
+                updateDoc._id = req.params.id;
+                res.status(200).json(updateDoc);
+            }
+        });
 });
 
 app.delete("/api/taps/:id", function(req, res) {
-  db.collection(TAPS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
-    if (err) {
-      handleError(res, err.message, "Failed to delete tap");
-    } else {
-      res.status(200).json(req.params.id);
-    }
-  });
+    db.collection(TAPS_COLLECTION).deleteOne({ _id: new ObjectID(req.params.id) }, function(err, result) {
+        if (err) {
+            handleError(res, err.message, "Failed to delete tap");
+        } else {
+            res.status(200).json(req.params.id);
+        }
+    });
 });
 
 
@@ -159,28 +160,28 @@ app.delete("/api/taps/:id", function(req, res) {
     }
 */
 app.get("/api/beers", function(req, res) {
-  db.collection(BEERS_COLLECTION).find({}).toArray(function(err, docs){
-    if (err ){
-      handleError(res, err.message, "Failed to get beers.");
-    } else {
-      res.status(200).json(docs);
-    }
-  });
+    db.collection(BEERS_COLLECTION).find({}).toArray(function(err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get beers.");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
 });
 
 app.post("/api/beers", function(req, res) {
-  var newBeer = req.body;
-  if (!req.body.name) {
-    handleError(res, "Invalid user input", "Must provide a name.", 400);
-  }
-
-  db.collection(BEERS_COLLECTION).insertOne(newBeer, function(err, doc){
-    if (err) {
-      handleError(res, err.message, "Failed to create new beer.");
-    } else {
-      res.status(201).json(doc.ops[0]);
+    var newBeer = req.body;
+    if (!req.body.name) {
+        handleError(res, "Invalid user input", "Must provide a name.", 400);
     }
-  });
+
+    db.collection(BEERS_COLLECTION).insertOne(newBeer, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to create new beer.");
+        } else {
+            res.status(201).json(doc.ops[0]);
+        }
+    });
 });
 
 /*  "/api/tap/:id"
@@ -190,38 +191,38 @@ app.post("/api/beers", function(req, res) {
  */
 
 app.get("/api/beers/:id", function(req, res) {
-  db.collection(BEERS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc){
-    if (err) {
-      handleError(res, err.message, "Failed to get beer");
-    } else {
-      res.status(200).json(doc);
-    }
-  })
+    db.collection(BEERS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to get beer");
+        } else {
+            res.status(200).json(doc);
+        }
+    })
 });
 
 app.put("/api/beers/:id", function(req, res) {
-  var updateDoc = req.body;
-  delete updateDoc._id;
+    var updateDoc = req.body;
+    delete updateDoc._id;
 
-  db.collection(BEERS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc,
-    function(err, doc) {
-      if (err) {
-        handleError(res, err.message, "Falled to update beer.");
-      } else {
-        updateDoc._id = req.params.id;
-        res.status(200).json(updateDoc);
-      };
-    });
+    db.collection(BEERS_COLLECTION).updateOne({ _id: new ObjectID(req.params.id) }, updateDoc,
+        function(err, doc) {
+            if (err) {
+                handleError(res, err.message, "Falled to update beer.");
+            } else {
+                updateDoc._id = req.params.id;
+                res.status(200).json(updateDoc);
+            };
+        });
 });
 
 app.delete("/api/beers/:id", function(req, res) {
-  db.collection(BEERS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result){
-    if (err) {
-      handleError(res, err.message, "Failed to delete beer.");
-    } else {
-      res.status(200).json(req.params.id);
-    }
-  });
+    db.collection(BEERS_COLLECTION).deleteOne({ _id: new ObjectID(req.params.id) }, function(err, result) {
+        if (err) {
+            handleError(res, err.message, "Failed to delete beer.");
+        } else {
+            res.status(200).json(req.params.id);
+        }
+    });
 });
 
 
@@ -241,28 +242,28 @@ app.delete("/api/beers/:id", function(req, res) {
     }
 */
 app.get("/api/breweries", function(req, res) {
-  db.collectoin(BREWERS_COLLECTION).find({}).toArray(function(err, docs){
-    if (err){
-      handleError(res, err.message, "Failed to get brewers");
-    } else {
-      res.status(200).json(docs);
-    }
-  });
+    db.collectoin(BREWERS_COLLECTION).find({}).toArray(function(err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get brewers");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
 });
 
 app.post("/api/breweries", function(req, res) {
-  var newBrewer = req.body;
-  if(!req.body.name) {
-    handleError(res, "Invalid input for brewer", "Must provide a name.", 400);
-  }
-
-  db.collectoin(BREWERS_COLLECTION).insetOne(newBrewer, function(err, doc){
-    if (err) {
-      handleError(res, err.message, "Failed to create a new brewer.");
-    } else {
-      res.status(201).json(doc.ops[0]);
+    var newBrewer = req.body;
+    if (!req.body.name) {
+        handleError(res, "Invalid input for brewer", "Must provide a name.", 400);
     }
-  })
+
+    db.collection(BREWERS_COLLECTION).insetOne(newBrewer, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to create a new brewer.");
+        } else {
+            res.status(201).json(doc.ops[0]);
+        }
+    })
 });
 
 /*  "/api/breweries/:id"
@@ -272,40 +273,40 @@ app.post("/api/breweries", function(req, res) {
  */
 
 app.get("/api/breweries/:id", function(req, res) {
-  db.collectoin(BREWERS_COLLECTION).findOne({_id: new ObjectID(req.params.id) }, function(err, doc){
-    if (err) {
-      handleError(res, err.message, "Failed to get brewery.");
-    } else {
-      res.status(200).json(doc);
-    }
-  })
+    db.collectoin(BREWERS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to get brewery.");
+        } else {
+            res.status(200).json(doc);
+        }
+    })
 });
 
 app.put("/api/breweries/:id", function(req, res) {
-  var updateDoc = req.body;
-  delete updateDoc._id;
-  db.collectoin(BREWERS_COLLECTION).updateOne({_id: new ObjectID(req.params.id) }, updateDoc,
-  function(err, doc){
-    if (err) {
-      handleError(res, err.message, "Failed to update brewer.");
-    } else {
-      updateDoc._id = req.params.id;
-      res.status(200).json(updateDoc);
-    }
-  })
+    var updateDoc = req.body;
+    delete updateDoc._id;
+    db.collectoin(BREWERS_COLLECTION).updateOne({ _id: new ObjectID(req.params.id) }, updateDoc,
+        function(err, doc) {
+            if (err) {
+                handleError(res, err.message, "Failed to update brewer.");
+            } else {
+                updateDoc._id = req.params.id;
+                res.status(200).json(updateDoc);
+            }
+        })
 });
 
 app.delete("/api/breweries/:id", function(req, res) {
-  db.collectoin(BREWERS_COLLECTION).deleteOne({ _id: new ObjectID(req.params.id) }, function(err, result){
-    if (err) {
-      handleError(res, err.message, "Failed to delete brewer.");
-    } else {
-      res.status(200).json(req.params.id);
-    }
-  })
+    db.collectoin(BREWERS_COLLECTION).deleteOne({ _id: new ObjectID(req.params.id) }, function(err, result) {
+        if (err) {
+            handleError(res, err.message, "Failed to delete brewer.");
+        } else {
+            res.status(200).json(req.params.id);
+        }
+    })
 });
 
-app.use(function (req, res){
-  //res.status(404).send("Dave's not here man!");
-  res.sendFile(distDir + '/index.html');
+app.use(function(req, res) {
+    //res.status(404).send("Dave's not here man!");
+    res.sendFile(distDir + '/index.html');
 })
